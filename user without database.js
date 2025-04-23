@@ -5,38 +5,35 @@ export default function App() {
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
   const [editingId, setEditingId] = useState(null);
 
-  // Handle form input changes
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission (create/update)
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     
     if (editingId) {
-      // Update existing user
       setUsers(users.map(user => 
         user.id === editingId ? { ...form, id: editingId } : user
       ));
     } else {
-      // Add new user
       setUsers([...users, { ...form, id: Date.now().toString() }]);
     }
     
-    // Reset form
     setForm({ name: '', phone: '', email: '' });
     setEditingId(null);
   };
 
-  // Handle edit action
+
   const handleEdit = (user) => {
     setForm(user);
     setEditingId(user.id);
   };
 
-  // Handle delete action
+ 
   const handleDelete = (id) => {
     if (window.confirm('Delete this user?')) {
       setUsers(users.filter(user => user.id !== id));
