@@ -1,0 +1,130 @@
+import { useState } from 'react';
+import './App.css';
+
+export default function App() {
+  const [users, setUsers] = useState([]);
+  const [form, setForm] = useState({ name: '', phone: '', email: '' });
+  const [editingId, setEditingId] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!form.name) newErrors.name = 'Name is required';
+    if (!/^\d+$/.test(form.phone)) newErrors.phone = 'Phone must contain only numbers';
+    if (!form.email.includes('@')) newErrors.email = 'Email must contain @';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    if (editingId) {
+      setUsers(users.map(user => 
+        user.id === editingId ? { ...form, id: editingId } : user
+      ));
+    } else {
+      setUsers([...users, { ...form, id: Date.now() }]);
+    }
+    setForm({ name: '', phone: '', email: '' });
+    setEditingId(null);
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || /^\d+$/.test(value)) {
+      setForm({...form, phone: value});
+    }
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Delete this user?')) {
+      setUsers(users.filter(user => user.id !== id));
+    }
+  };
+
+  return (
+    <div className="app-container">
+      <h1 className="app-title">Users Manage</h1>
+      
+      <form className="user-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            name="name"
+            value={form.name}
+            onChange={(e) => setForm({...form, name: e.target.value})}
+            placeholder="Name"
+          />
+          {errors.name && <span className="error">{errors.name}</span>}
+        </div>
+        
+        <div className="form-group">
+          <input
+            name="phone"
+            value={form.phone}
+            onChange={handlePhoneChange}
+            placeholder="Phone Number"
+          />
+          {errors.phone && <span className="error">{errors.phone}</span>}
+        </div>
+        
+        <div className="form-group">
+          <input
+            name="email"
+            value={form.email}
+            onChange={(e) => setForm({...form, email: e.target.value})}
+            placeholder="Email Address)"
+            type="email"
+          />
+          {errors.email && <span className="error">{errors.email}</span>}
+        </div>
+        
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            {editingId ? 'Update' : 'Add'}
+          </button>
+          {editingId && (
+            <button 
+              type="button" 
+              className="cancel-btn"
+              onClick={() => setEditingId(null)}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+
+      <div className="user-list">
+      <h1 className="app-title">Users List</h1>
+        {users.map(user => (
+          <div key={user.id} className="user-card">
+            <div className="user-info">
+              <h3>{user.name}</h3>
+              <p>{user.phone}</p>
+              <p>{user.email}</p>
+            </div>
+            <div className="user-actions">
+              <button 
+                className="edit-btn"
+                onClick={() => { 
+                  setForm(user); 
+                  setEditingId(user.id); 
+                }}
+              >
+                Edit
+              </button>
+              <button 
+                className="delete-btn"
+                onClick={() => handleDelete(user.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
