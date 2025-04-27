@@ -1,0 +1,79 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic Styling */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f0f0f0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Button Styling */
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    margin: 5px;
+}
+
+.add-btn { background: green; }
+.edit-btn { background: orange; }
+.delete-btn { background: red; }
+.back-btn { background: gray; }
+.save-btn { background: blue; }
+
+/* Form Styling */
+.form-group {
+    margin: 15px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.actions {
+    white-space: nowrap;
+}
+
+.no-records {
+    text-align: center;
+    color: #666;
+    padding: 1rem;
+} 
